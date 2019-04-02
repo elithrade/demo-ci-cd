@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run: npm run build
+      - run: npm run test
       - aws-s3/sync:
           from: dist
           to: 's3://ci-cd-demo/'
@@ -34,8 +34,8 @@ jobs:
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400" \
+          overwrite: true
 
-overwrite: true
 workflows:
   version: 2.1
   build:
@@ -51,3 +51,7 @@ workflows:
           filters:
             branches:
               only: develop
+
+    test:
+      jobs:
+        - test
